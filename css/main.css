@@ -4,3 +4,4 @@ body {font-size: 14px;}
 .books-item-title {width: 100%;float: left;margin-bottom: 10px;}
 .books-item-img {width: 100%;float: left;}
 .morebooks {display: table;margin: 25px auto;height: 40px;line-height: 40px;background: #000;color: #fff;text-transform: uppercase;padding: 0 25px;cursor: pointer;}
+.morebooks:hover {color: #fff;}
