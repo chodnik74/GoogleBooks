@@ -9,15 +9,26 @@
     <link href="css/main.css" rel="stylesheet">
     <script src="libs/handlebars-v4.0.5.js"></script>
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
   <body>
     <div class="container">
-    <h1>Seznam knih o JavaScriptu</h1>
-    <div id="books"></div>
-    <div class="morebooks btn">načíst další</div>
+      <h1>Seznam knih o JavaScriptu</h1>
+      <div id="books-test"></div>
+      <div id="books"></div>
+      <script id="books-template" type="text/x-handlebars-template">
+      {{#each books_item}}
+      <div class='col-xs-12 col-sm-6'>
+        <div class='books-item'>
+          <div class='books-item-title'>{{title}}</div>
+          <div class='books-item-images'><img src="{{img}}" alt="{{title}}"></div>
+        </div>
+      </div>
+      {{/each}}
+      </script>
+      <div class="morebooks btn">načíst další</div>
     </div>
     <script src="libs/jquery-3.1.1.min.js"></script>
     <script src="libs/bootstrap.min.js"></script>
