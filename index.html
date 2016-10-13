@@ -19,11 +19,11 @@
       <div id="books-test"></div>
       <div id="books"></div>
       <script id="books-template" type="text/x-handlebars-template">
-      {{#each books_item}}
+      {{#each booksItem}}
       <div class='col-xs-12 col-sm-6'>
         <div class='books-item'>
           <div class='books-item-title'>{{title}}</div>
-          <div class='books-item-images'><img src="{{img}}" alt="{{title}}"></div>
+          <div class='books-item-images'>{{{img}}}</div>
         </div>
       </div>
       {{/each}}

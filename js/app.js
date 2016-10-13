@@ -48,57 +48,32 @@ $(document).ready(function() {
 
             var booksInfo = document.getElementById("books-template").innerHTML;
             var template = Handlebars.compile(booksInfo);
-            var data = [];
+            var bookItems = [];
             for (var i = 0; i < responseItemCount; i++) {
                 item = response.items[i];
                 volumeInfo = item.volumeInfo;
                 clearfix = "";
-                var book_title;
-                var book_img;
+                var bookTitle;
+                var bookImg;
                 if (indexBook % 2 == 0) {
                     clearfix = "<div class='clearfix visible-sm visible-md visible-lg'></div>";
                 }
-
-                /*$books.html($books.html() + clearfix + "<div class='col-xs-12 col-sm-6'>" +
-                    "<div class='books-item'>" +
-                    "<div class='books-item-title'>" + (volumeInfo.title ? volumeInfo.title : "- / -") + "</div>" +
-                    "<div class='books-item-images'>" + (volumeInfo.imageLinks ? ("<img src='" + volumeInfo.imageLinks.thumbnail + "'>") : "no thumbnail") + "</div>" +
-                    "</div>" +
-                    "</div>");
-                */
-                book_title = (volumeInfo.title ? volumeInfo.title : "- / -");
-                book_img =  (volumeInfo.imageLinks ? ("<img src='" + volumeInfo.imageLinks.thumbnail + "'>") : "no thumbnail");
-                data.push({title: book_title, img: book_img});
+                bookTitle = (volumeInfo.title ? volumeInfo.title : "- / -");
+                bookImg =  (volumeInfo.imageLinks ? ("<img src='" + volumeInfo.imageLinks.thumbnail + "'>") : "no thumbnail");
+                bookItems.push({title: bookTitle, img: bookImg});
                 indexBook++;
             }
-            /*
-            potřebuji získat:
+            console.log(bookItems);
             var booksData = template({
-                books_item: [{
-                    title: "JavaScript: The Good Parts",
-                    img: "http://books.google.com/books/content?id=PXa2bby0oQ0C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                }, {
-                    title: "JavaScript",
-                    img: "http://books.google.com/books/content?id=4gzqCwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                }, {
-                    title: "JavaScript Okamžitě",
-                    img: "http://books.google.com/books/content?id=NRDqCwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-
-                }]
-            });*/
-            console.log(data);
-            var booksData = template({
-                books_item: [data]
+                booksItem: bookItems
             });
             document.getElementById('books-test').innerHTML += booksData;
 
             // Pokud neodpovídá počet záznamů (chyba v google books API), načteme chybějící zbytek
             if (responseItemCount < originalCount) {
                 console.log("Error in loading, try to catch all 10 items..");
-
                 recall = true;
                 getBooks(originalCount - responseItemCount, index + originalCount);
-
                 return;
             }
 
