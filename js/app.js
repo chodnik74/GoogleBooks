@@ -50,18 +50,19 @@ $(document).ready(function() {
             var template = Handlebars.compile(booksInfo);
             var bookItems = [];
             for (var i = 0; i < responseItemCount; i++) {
+                indexBook++;
                 item = response.items[i];
                 volumeInfo = item.volumeInfo;
                 clearfix = "";
                 var bookTitle;
                 var bookImg;
-                if (indexBook % 2 == 0) {
-                    clearfix = "<div class='clearfix visible-sm visible-md visible-lg'></div>";
-                }
                 bookTitle = (volumeInfo.title ? volumeInfo.title : "- / -");
                 bookImg =  (volumeInfo.imageLinks ? ("<img src='" + volumeInfo.imageLinks.thumbnail + "'>") : "no thumbnail");
-                bookItems.push({title: bookTitle, img: bookImg});
-                indexBook++;
+                if (indexBook % 2 == 0) {
+                    bookItems.push({title: bookTitle, img: bookImg, clearfix: true});
+                } else {
+                    bookItems.push({title: bookTitle, img: bookImg, clearfix: false});
+                }
             }
             console.log(bookItems);
             var booksData = template({
