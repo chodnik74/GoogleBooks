@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-    var $books = $("#books");
     var $btn = $(".morebooks");
     var indexBook = 0;
     var block = false;
@@ -68,7 +67,7 @@ $(document).ready(function() {
             var booksData = template({
                 booksItem: bookItems
             });
-            document.getElementById('books-test').innerHTML += booksData;
+            document.getElementById('books').innerHTML += booksData;
 
             // Pokud neodpovídá počet záznamů (chyba v google books API), načteme chybějící zbytek
             if (responseItemCount < originalCount) {
