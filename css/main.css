@@ -1,8 +1,13 @@
-body {font-size: 14px;}
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&subset=latin-ext');
+body {background: #E6E6E6;font-size: 14px;color: #333;font-family: "Open Sans";font-weight: 400;}
+h1 {font-family: "Roboto Condensed";font-weight: bold;font-size: 35px;}
+img {max-width: 100%;}
 #books {width: 100%;float: left;margin-top: 40px;}
-#books-test {width: 100%;float: left;margin-top: 40px;}
-.books-item {width: 100%;float: left;margin-bottom: 40px;}
-.books-item-title {width: 100%;float: left;margin-bottom: 10px;}
-.books-item-img {width: 100%;float: left;}
+.books-item {width: 100%;float: left;margin-bottom: 30px;background: #fff;border: 1px solid #dadada;box-shadow: 0 0 1px #999;padding: 15px;min-height: 177px;}
+.books-item-title {width: 100%;float: left;margin-bottom: 10px;font-family: "Roboto Condensed";font-weight: bold;font-size: 18px;}
+.books-item-desc {width: 100%;float: left;}
+.books-item-img {width: 100%;float: left;height: 145px;}
+.books-item-img img {max-width: 100%;max-height: 145px;}
 .morebooks {display: table;margin: 25px auto;height: 40px;line-height: 40px;background: #000;color: #fff;text-transform: uppercase;padding: 0 25px;cursor: pointer;}
 .morebooks:hover {color: #fff;}
