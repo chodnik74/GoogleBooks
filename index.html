@@ -16,28 +16,30 @@
   <body>
     <div class="container">
       <h1>Seznam knih o JavaScriptu</h1>
-      <div id="books"></div>
+      <div class="books-wrap">
+        <div class="row">
+          <div id="books"></div>
+        </div>
+      </div>
       <script id="books-template" type="text/x-handlebars-template">
-      <div class="row">
-        {{#each booksItem}}
-        <div class='col-xs-12 col-sm-6'>
-          <div class='books-item'>
-            <div class="row">
-              <div class="col-xs-12 col-md-3">
-                <div class='books-item-img'>{{{img}}}</div>
-              </div>
-              <div class="col-xs-12 col-md-9">
-                <div class='books-item-title'>{{title}}</div>
-                <div class='books-item-desc'>{{description}}</div>
-              </div>
+      {{#each booksItem}}
+      <div class='col-xs-12 col-sm-6'>
+        <div class='books-item'>
+          <div class="row">
+            <div class="col-xs-12 col-md-3">
+              <div class='books-item-img'>{{{img}}}</div>
+            </div>
+            <div class="col-xs-12 col-md-9">
+              <div class='books-item-title'>{{title}}</div>
+              <div class='books-item-desc'>{{description}}</div>
             </div>
           </div>
         </div>
-        {{#if clearfix}}
-        <div class='clearfix visible-sm visible-md visible-lg'></div>
-        {{/if}}
-        {{/each}}
       </div>
+      {{#if clearfix}}
+      <div class='clearfix visible-sm visible-md visible-lg'></div>
+      {{/if}}
+      {{/each}}
       </script>
       <div class="morebooks btn">načíst další</div>
     </div>
