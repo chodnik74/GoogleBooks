@@ -2,12 +2,13 @@ $(document).ready(function() {
 
     var $btn = $(".morebooks");
     var body = $("body");
-    var indexBook = 0;
+    var indexBook = 1;
     var block = false;
     var recall = false;
     var windowHeight = $(window).height();
     var bodyHeight = body.height();
     var searchWord = "javascript";
+    var publisher = "";
 
     function blockBtn() {
         block = true;
@@ -33,17 +34,11 @@ $(document).ready(function() {
         if (count == 1) count = 2; // Google nechce vracet pouze jednu položku
 
         $.getJSON("https://www.googleapis.com/books/v1/volumes?q=" + searchWord + "&key=AIzaSyAXdxLtzZneUFXbWDt_TjbJMKhEIdGcYcQ&maxResults=" + count + "&startIndex=" + index, function(response) {
-            var volumeInfo;
-            var item;
-            var clearfix;
+            var volumeInfo, item, clearfix, bookTitle, bookDescFull, bookDesc, bookImg, bookPublisher;
             var responseItemCount = 0;
             var booksInfo = document.getElementById("books-template").innerHTML;
             var template = Handlebars.compile(booksInfo);
             var bookItems = [];
-            var bookTitle;
-            var bookDescFull;
-            var bookDesc;
-            var bookImg;
 
             if (response.items && response.items.length > 0) {
                 responseItemCount = response.items.length;
@@ -55,30 +50,45 @@ $(document).ready(function() {
             }
 
             for (var i = 0; i < responseItemCount; i++) {
-                indexBook++;
                 item = response.items[i];
                 volumeInfo = item.volumeInfo;
                 clearfix = "";
                 bookTitle = (volumeInfo.title ? volumeInfo.title : "No title");
                 bookDescFull = (volumeInfo.description ? volumeInfo.description : "No description");
-                bookDesc = bookDescFull.substring(0, 200);
+                bookDesc = bookDescFull.substring(0, 150);
                 bookDesc = bookDesc + "...";
                 bookImg = (volumeInfo.imageLinks ? ("<img src='" + volumeInfo.imageLinks.thumbnail + "'>") : "No thumbnail");
-                if (indexBook % 2 == 0) {
-                    bookItems.push({
-                        title: bookTitle,
-                        description: bookDesc,
-                        img: bookImg,
-                        clearfix: true
-                    });
+                bookPublisher = (volumeInfo.publisher ? volumeInfo.publisher : "No publisher");
+                if (indexBook  % 2 == 0) {
+                    clearfix = true;
+                } else {
+                    clearfix = false;
+                }
+                if (publisher != "") {
+                    var bookPublisherSmall = bookPublisher.toLowerCase();
+                    var publisherSmall = publisher.toLowerCase();
+                    var publisherMath = bookPublisherSmall.indexOf(publisherSmall); 
+                    if (publisherMath >= 0) {
+                        bookItems.push({
+                            title: bookTitle,
+                            description: bookDesc,
+                            img: bookImg,
+                            publisher: bookPublisher,
+                            clearfix: clearfix
+                        });
+                        indexBook++;
+                    }
                 } else {
                     bookItems.push({
                         title: bookTitle,
                         description: bookDesc,
                         img: bookImg,
-                        clearfix: false
+                        publisher: bookPublisher,
+                        clearfix: clearfix
                     });
+                    indexBook++;
                 }
+
             }
             console.log(bookItems);
             var booksData = template({
@@ -107,6 +117,18 @@ $(document).ready(function() {
         getBooks();
     });
 
+    $("#search-form").submit(function(event) {
+        var $inputs = $('#search-form :input');
+        var values = {};
+        $inputs.each(function() {
+            values[this.name] = $(this).val();
+        });
+        searchWord = values["bookName"];
+        publisher = values["bookPublisher"];
+        $("#books").empty();
+        getBooks();
+        event.preventDefault();
+    });
     $(window).scroll(function() {
         var pos = body.scrollTop() + windowHeight;
         var offset = $btn.offset();
