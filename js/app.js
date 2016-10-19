@@ -1,8 +1,12 @@
 $(document).ready(function() {
 
     var $btn = $(".morebooks");
+    var $books = $('#books');
+    var $booksTemplate = $("#books-template");
     var $bookName = $("#search-form input[name='bookName']");
     var $bookPublisher = $("#search-form input[name='bookPublisher']");
+    var booksInfo = $booksTemplate.html();
+    var template = Handlebars.compile(booksInfo);
     var body = $("body");
     var indexBook = 0;
     var block = false;
@@ -38,11 +42,10 @@ $(document).ready(function() {
         if (count == 1) count = 2; // Google nechce vracet pouze jednu položku
         var apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + searchWord + searchPublisher + "&key=AIzaSyAXdxLtzZneUFXbWDt_TjbJMKhEIdGcYcQ&maxResults=" + count + "&startIndex=" + index;
         console.log(apiUrl);
+
         $.getJSON(apiUrl, function(response) {
             var volumeInfo, item, clearfix, bookTitle, bookDescFull, bookDesc, bookImg, bookPublisher;
             var responseItemCount = 0;
-            var booksInfo = document.getElementById("books-template").innerHTML;
-            var template = Handlebars.compile(booksInfo);
             var bookItems = [];
 
             if (response.items && response.items.length > 0) {
@@ -80,11 +83,13 @@ $(document).ready(function() {
                     
 
             }
-            console.log(bookItems);
+            //console.log(bookItems);
             var booksData = template({
                 booksItem: bookItems
             });
-            document.getElementById('books').innerHTML += booksData;
+            //document.getElementById('books').innerHTML += booksData;
+            var oldBooksData = $books.html();
+            $books.html(oldBooksData + booksData);
 
             // Pokud neodpovídá počet záznamů (chyba v google books API), načteme chybějící zbytek
             if (responseItemCount < originalCount) {
@@ -114,6 +119,7 @@ $(document).ready(function() {
         getBooks();
         event.preventDefault();
     });
+
     $(window).scroll(function() {
         var pos = body.scrollTop() + windowHeight;
         var offset = $btn.offset();
@@ -122,5 +128,6 @@ $(document).ready(function() {
             getBooks();
         }
     });
+
     getBooks();
 });
