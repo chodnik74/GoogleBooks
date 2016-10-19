@@ -5,8 +5,7 @@ $(document).ready(function() {
     var $booksTemplate = $("#books-template");
     var $bookName = $("#search-form input[name='bookName']");
     var $bookPublisher = $("#search-form input[name='bookPublisher']");
-    var booksInfo = $booksTemplate.html();
-    var template = Handlebars.compile(booksInfo);
+    var template = Handlebars.compile($booksTemplate.html());
     var body = $("body");
     var indexBook = 0;
     var block = false;
