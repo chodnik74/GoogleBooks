@@ -114,7 +114,7 @@ $(document).ready(function() {
     $("#search-form").submit(function(event) {
         searchWord = $bookName.val() ? $bookName.val() : "javascript";
         publisher = $bookPublisher.val() ? $bookPublisher.val() : "";
-        $("#books").empty();
+        $books.empty();
         getBooks();
         event.preventDefault();
     });
