@@ -1,8 +1,10 @@
 $(document).ready(function() {
 
     var $btn = $(".morebooks");
+    var $bookName = $("#search-form input[name='bookName']");
+    var $bookPublisher = $("#search-form input[name='bookPublisher']");
     var body = $("body");
-    var indexBook = 1;
+    var indexBook = 0;
     var block = false;
     var recall = false;
     var windowHeight = $(window).height();
@@ -28,12 +30,15 @@ $(document).ready(function() {
 
         if (!count) count = 10; // Pokud není nastaven count nebo pokud je 0, false, null
         if (!index) index = indexBook; // Pokud není index nastaven, použije se počítadlo z rodičovského scope
-
+        var searchPublisher = "";
         var originalCount = count;
-
+        if (publisher) {
+            var searchPublisher = "+inpublisher:" + publisher;
+        }
         if (count == 1) count = 2; // Google nechce vracet pouze jednu položku
-
-        $.getJSON("https://www.googleapis.com/books/v1/volumes?q=" + searchWord + "&key=AIzaSyAXdxLtzZneUFXbWDt_TjbJMKhEIdGcYcQ&maxResults=" + count + "&startIndex=" + index, function(response) {
+        var apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + searchWord + searchPublisher + "&key=AIzaSyAXdxLtzZneUFXbWDt_TjbJMKhEIdGcYcQ&maxResults=" + count + "&startIndex=" + index;
+        console.log(apiUrl);
+        $.getJSON(apiUrl, function(response) {
             var volumeInfo, item, clearfix, bookTitle, bookDescFull, bookDesc, bookImg, bookPublisher;
             var responseItemCount = 0;
             var booksInfo = document.getElementById("books-template").innerHTML;
@@ -50,6 +55,7 @@ $(document).ready(function() {
             }
 
             for (var i = 0; i < responseItemCount; i++) {
+                indexBook++;
                 item = response.items[i];
                 volumeInfo = item.volumeInfo;
                 clearfix = "";
@@ -64,30 +70,14 @@ $(document).ready(function() {
                 } else {
                     clearfix = false;
                 }
-                if (publisher != "") {
-                    var bookPublisherSmall = bookPublisher.toLowerCase();
-                    var publisherSmall = publisher.toLowerCase();
-                    var publisherMath = bookPublisherSmall.indexOf(publisherSmall); 
-                    if (publisherMath >= 0) {
-                        bookItems.push({
-                            title: bookTitle,
-                            description: bookDesc,
-                            img: bookImg,
-                            publisher: bookPublisher,
-                            clearfix: clearfix
-                        });
-                        indexBook++;
-                    }
-                } else {
-                    bookItems.push({
-                        title: bookTitle,
-                        description: bookDesc,
-                        img: bookImg,
-                        publisher: bookPublisher,
-                        clearfix: clearfix
-                    });
-                    indexBook++;
-                }
+                bookItems.push({
+                    title: bookTitle,
+                    description: bookDesc,
+                    img: bookImg,
+                    publisher: bookPublisher,
+                    clearfix: clearfix
+                });
+                    
 
             }
             console.log(bookItems);
@@ -118,13 +108,8 @@ $(document).ready(function() {
     });
 
     $("#search-form").submit(function(event) {
-        var $inputs = $('#search-form :input');
-        var values = {};
-        $inputs.each(function() {
-            values[this.name] = $(this).val();
-        });
-        searchWord = values["bookName"];
-        publisher = values["bookPublisher"];
+        searchWord = $bookName.val() ? $bookName.val() : "javascript";
+        publisher = $bookPublisher.val() ? $bookPublisher.val() : "";
         $("#books").empty();
         getBooks();
         event.preventDefault();
