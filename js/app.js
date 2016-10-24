@@ -49,11 +49,14 @@ $(document).ready(function() {
 
             if (response.items && response.items.length > 0) {
                 responseItemCount = response.items.length;
-
                 // Pokud v důsledku fixu počtu dojde více položek než bylo žádáno, ořízneme příchozí data
                 if (responseItemCount > originalCount) {
                     responseItemCount = originalCount;
                 }
+            } else {
+                var oldData = $books.html();
+                $books.html(oldData + "<div class='col-xs-12'><p class='text-center'>Žádné knihy nenalezeny</p></div>");
+                return false;
             }
 
             for (var i = 0; i < responseItemCount; i++) {
